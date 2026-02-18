@@ -1,0 +1,23 @@
+DNS records (Namecheap PremiumDNS) — target setup
+
+A Records (apex / root):
+@  185.199.108.153
+@  185.199.109.153
+@  185.199.110.153
+@  185.199.111.153
+
+CNAME (www):
+www  <your_github_username>.github.io
+
+Bot subdomain:
+bot  176.197.150.150
+
+Yandex Webmaster verification (already done via DNS TXT):
+@  yandex-verification: <your_code>
+
+Google Search Console:
+- URL Prefix verification is in HTML meta tag:
+  google-site-verification = k3p72DOG4IY43Zcxgk-vc1v0iFhsL73uqDpdBK9BLhQ
+
+- Domain property verification requires DNS TXT:
+  @  google-site-verification=XXXXXXXXXXXX   (add after creating Domain property)

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Host: flash.gift
+Sitemap: https://flash.gift/sitemap.xml
