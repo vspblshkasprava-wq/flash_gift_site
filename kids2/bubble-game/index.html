@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex,nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#10bfb7">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Мыльные шары">
+    <link rel="manifest" href="../manifest.webmanifest">
+    <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png">
+    <title>Мыльные шары</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main id="menu" class="menu">
+      <section class="panel" aria-labelledby="title">
+        <a class="back-link" href="../index.html">Назад</a>
+        <p class="eyebrow">Мышка</p>
+        <h1 id="title">Мыльные шары</h1>
+        <p class="lead">Двигайте мышкой: большая пузырьковая палочка лопает шары при касании.</p>
+
+        <section class="locations" aria-labelledby="locations-title">
+          <h2 id="locations-title">Уровень</h2>
+          <div id="locationList" class="location-list"></div>
+          <button id="resetLevelSettingsButton" class="quiet-button level-reset-button" type="button">Вернуть настройки всех уровней по умолчанию</button>
+        </section>
+
+        <section class="locations" aria-labelledby="tools-title">
+          <h2 id="tools-title">Предмет</h2>
+          <div id="toolList" class="location-list"></div>
+        </section>
+
+        <section id="keyboardOverlaySettings" class="locations settings" aria-labelledby="keyboard-overlay-title">
+          <h2 id="keyboard-overlay-title">Клавиатура поверх шаров</h2>
+          <div class="settings-grid">
+            <label class="toggle-control">
+              <input id="keyboardOverlayToggle" type="checkbox" checked>
+              <span>Показывать нажатые клавиши в игре</span>
+            </label>
+
+            <label class="color-control">
+              <span>Цвет обводки букв</span>
+              <input id="letterStrokeColor" type="color" value="#24133b">
+            </label>
+          </div>
+        </section>
+
+        <section class="locations sounds" aria-labelledby="sounds-title">
+          <h2 id="sounds-title">Звуки</h2>
+          <div class="sound-columns">
+            <div>
+              <h3>Лопание пузырей</h3>
+              <div id="popSoundList" class="sound-list"></div>
+            </div>
+            <div>
+              <h3>Левый суперудар</h3>
+              <div id="chargeSoundList" class="sound-list"></div>
+            </div>
+          </div>
+          <div class="settings-grid sound-settings">
+            <label class="range-control">
+              <span>Общая громкость</span>
+              <input id="effectsVolume" type="range" min="0" max="100" value="55">
+            </label>
+
+            <label class="range-control">
+              <span>Громкость суперударов</span>
+              <input id="superVolume" type="range" min="0" max="100" value="50">
+            </label>
+          </div>
+          <button id="enableSoundButton" class="secondary-button" type="button">Проверить звук</button>
+        </section>
+
+        <section class="locations settings" aria-labelledby="mobile-title">
+          <h2 id="mobile-title">Телефон и планшет</h2>
+          <div class="settings-grid">
+            <label class="toggle-control">
+              <input id="mobileSuperButtonsToggle" type="checkbox" checked>
+              <span>Показывать кнопки суперударов на телефоне/планшете</span>
+            </label>
+          </div>
+        </section>
+
+        <section class="locations progress" aria-labelledby="progress-title">
+          <h2 id="progress-title">Прогресс</h2>
+          <div id="progressSummary" class="progress-summary"></div>
+          <button id="resetProgressButton" class="quiet-button" type="button">Сбросить прогресс</button>
+        </section>
+
+        <section class="locations controls" aria-labelledby="controls-title">
+          <h2 id="controls-title">Управление в яркой локации</h2>
+          <ul class="control-list">
+            <li><strong>Левая кнопка</strong><span>рост палочки до 500% на ПК, с безопасным пределом на touch-устройствах</span></li>
+            <li><strong>Правая кнопка</strong><span>радужная волна</span></li>
+            <li><strong>Прокрутка колеса</strong><span>вихрь вокруг палочки</span></li>
+            <li><strong>Нажатие колеса</strong><span>взрыв пузырей</span></li>
+            <li><strong>Боковая назад</strong><span>заморозка</span></li>
+            <li><strong>Боковая вперед</strong><span>звездный дождь</span></li>
+          </ul>
+        </section>
+
+        <div class="actions">
+          <button id="startGame" class="primary-button" type="button">Старт</button>
+          <p class="hint">Выход: Ctrl + X или удержать правый верхний угол.</p>
+        </div>
+      </section>
+    </main>
+
+    <div id="levelSettingsModal" class="settings-modal hidden" role="dialog" aria-modal="true" aria-labelledby="levelSettingsTitle">
+      <section class="settings-dialog">
+        <p class="eyebrow">Настройки раунда</p>
+        <h2 id="levelSettingsTitle">Настроить уровень</h2>
+
+        <div class="level-setting-group">
+          <label for="levelScoreLimit">Цель по очкам</label>
+          <div class="number-stepper">
+            <button id="scoreMinusButton" type="button" aria-label="Уменьшить цель на 10 000">−10 000</button>
+            <input id="levelScoreLimit" type="number" min="10000" max="10000000" step="10000" inputmode="numeric">
+            <button id="scorePlusButton" type="button" aria-label="Увеличить цель на 10 000">+10 000</button>
+          </div>
+          <label class="limit-toggle">
+            <input id="scoreUnlimited" type="checkbox">
+            <span>Без ограничения по очкам</span>
+          </label>
+        </div>
+
+        <div class="level-setting-group">
+          <span class="setting-label">Время раунда</span>
+          <div class="time-stepper">
+            <button id="timeMinusButton" type="button" aria-label="Уменьшить время на 30 секунд">−30 сек</button>
+            <div class="time-fields">
+              <label for="levelTimeMinutes">Минуты
+                <input id="levelTimeMinutes" type="number" min="0" max="60" step="1" inputmode="numeric">
+              </label>
+              <span aria-hidden="true">:</span>
+              <label for="levelTimeSeconds">Секунды
+                <input id="levelTimeSeconds" type="number" min="0" max="59" step="1" inputmode="numeric">
+              </label>
+            </div>
+            <button id="timePlusButton" type="button" aria-label="Увеличить время на 30 секунд">+30 сек</button>
+          </div>
+          <label class="limit-toggle">
+            <input id="timeUnlimited" type="checkbox">
+            <span>Без ограничения по времени</span>
+          </label>
+        </div>
+
+        <p id="levelSettingsError" class="settings-error hidden" role="alert"></p>
+        <div class="level-settings-actions">
+          <button id="saveLevelSettingsButton" class="primary-button" type="button">Сохранить</button>
+          <button id="defaultLevelSettingsButton" class="secondary-button" type="button">По умолчанию</button>
+          <button id="cancelLevelSettingsButton" class="quiet-button" type="button">Отмена</button>
+        </div>
+      </section>
+    </div>
+
+    <section id="game" class="game hidden" aria-label="Игровой экран">
+      <canvas id="gameCanvas" tabindex="0"></canvas>
+      <div id="mobileControls" class="mobile-controls hidden" aria-label="Мобильные суперудары">
+        <button id="mobileSuperButton" type="button">Супер</button>
+        <button id="mobileWaveButton" type="button">Волна</button>
+      </div>
+      <div id="resultOverlay" class="result-overlay hidden" role="dialog" aria-labelledby="resultTitle">
+        <h2 id="resultTitle">Раунд окончен</h2>
+        <p id="resultText"></p>
+        <div class="result-actions">
+          <button id="repeatLevelButton" type="button">Еще раз</button>
+          <button id="nextLevelButton" type="button">Следующий уровень</button>
+          <button id="resultMenuButton" type="button">В меню</button>
+        </div>
+      </div>
+      <div id="exitZone" class="exit-zone" aria-hidden="true"></div>
+    </section>
+
+    <script src="../assets/deployment-storage.js"></script>
+    <script src="game.js"></script>
+  </body>
+</html>
